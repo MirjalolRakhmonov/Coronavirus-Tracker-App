@@ -26,6 +26,11 @@ public class CoronavirusDataService {
 	
 	private List<LocationStats>allStats=new ArrayList<>();
 	
+	
+	public List<LocationStats> getAllStats() {
+		return allStats;
+	}
+
 	@PostConstruct
 	@Scheduled(cron = "* * 1 * * *")
 	public void fetchVirusData() throws IOException, InterruptedException {
@@ -40,12 +45,12 @@ public class CoronavirusDataService {
 		
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
 		for (CSVRecord record : records) {
-			LocationStats locationStat=new LocationStats();
-			locationStat.setState(record.get("Province/State"));
-			locationStat.setCountry(record.get("Country/Region"));
-			locationStat.setLatestTotalCases(Integer.parseInt(record.get(record.size()-1)));
-			System.out.println(locationStat);
-			newStats.add(locationStat);
+			LocationStats locationStats=new LocationStats();
+			locationStats.setState(record.get("Province/State"));
+			locationStats.setCountry(record.get("Country/Region"));
+			locationStats.setLatestTotalCases(Integer.parseInt(record.get(record.size()-1)));
+			System.out.println(locationStats);
+			newStats.add(locationStats);
 		}
 		
 		this.allStats=newStats;
